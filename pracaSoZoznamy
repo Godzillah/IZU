@@ -1,0 +1,107 @@
+% AUTHOR : MAROS ORSAK
+% DATE   : 19.4.2018
+
+%%prumer (S, N)
+% PRIKLAD NA ----> priemer([12,3], M)
+% PRIKLAD NA ----> priemer([2,3,1,2,3,4], M)
+% PRIKAD NA -----> primer([], M)
+
+priemer([], false) :- 
+    write('Dlzka listu nemoze byt nula.').
+priemer(S, N) :-
+    dlzka(S, L), sucet(S, U), N is U/L , write('Priemer je --> '), write(N), nl.
+
+%dlzka (S, N)
+% PRIKLAD NA ---> dlzka([a,b,c,d,e,f,g,a,a,a],10)
+dlzka([],0).
+dlzka([H|T], N) :-
+    is_list(H), dlzka(H, M), dlzka(T, L), N is L + M.
+dlzka([H|T], N) :-
+    atomic(H), dlzka(T, X), N is X + 1, write('Dlzka je--> '), write(X), nl.
+    
+
+% sucet(S, N)
+% PRIKLAD NA ---> sucet([2 , 10, 22, 11], 45)
+% PRIKLAD NA ---> sucet([],0)
+sucet([],0) :-
+    write('Sucet je 0').
+sucet([H|T], N) :-
+    is_list(H), sucet(H, M), sucet(T, L), N is L + M, write('N1 je --> ') , write(N).
+sucet([H|T], N) :-
+    atomic(H), sucet(T, X), N is X + H, write('N2 je --> ') , write(N), nl.
+
+% rozdel (S, N)
+% METODA ROZDELI LIST NA HEAD AND TAIL 
+% 1. arg = cely list
+% 2. arg = pozicia z ktoreho budeme delit inak povedane TRIM FUNCTION()
+% 3. arg = HEAD 
+% 4. arg = TAIL 
+% @return === > false alebo true
+rozdel(L,0,[],L).
+rozdel([H|T], N1, [H|K], X) :-
+    rozdel(T, N, K, X), N1 is N + 1.
+
+
+% sucet druha vezria...
+sum_list([], 0).
+sum_list([H|T], Sum) :-
+   sum_list(T, Rest),
+   Sum is H + Rest.
+
+% minimum 
+min_list([], Min, Min).
+min_list([H|T], Min0, Min) :-
+    Min1 is min(H, Min0),
+    min_list(T, Min1, Min).
+
+
+% maximum 
+
+max_l([X],X) :- !, true.
+%max_l([X],X). %unuse cut
+%max_l([X],X):- false.
+max_l([X|Xs], M):- max_l(Xs, M), M >= X.
+max_l([X|Xs], X):- max_l(Xs, M), X >  M.
+
+
+
+% prienik 
+
+inter([], _, []).
+
+inter([H1|T1], L2, [H1|Res]) :-
+    member(H1, L2),
+    inter(T1, L2, Res).
+
+inter([_|T1], L2, Res) :-
+    inter(T1, L2, Res).
+
+% test pre prienik....
+test(X):-
+        inter([1,3,5,2,4], [6,1,2], X), !.
+
+
+% zjednotenie 
+%append([a,b,c],[one,two,three],Result),write(Result).
+
+% symetricky rozdiel
+% NOT WORKING (((
+
+%diffSet([H|T1],Set,Z):-
+%member(H, Set),       % NOTE: arguments swapped!
+%!, delete(T1, H, T2), % avoid duplicates in first list
+%delete(Set, H, Set2), % remove duplicates in second list
+%diffSet(T2, Set2, Z).
+%diffSet([H|T], Set, [H|Set2]) :-
+%diffSet(T,Set,Set2).
+
+
+
+
+
+
+
+
+
+
+
